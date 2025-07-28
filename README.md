@@ -86,7 +86,9 @@ To identify active hosts on the internal network using ARP-based reconnaissance.
 ```bash
 sudo netdiscover -r 10.10.10.0/24
 ### 🖼️ Screenshot
-![Netdiscover Result](./screenshots/proof_of_concepts/phase1/netdiscover_result.png)
+
+![Netdiscover Result](screenshots/proof_of_concepts/phase1/netdiscover_result.png)
+
 
 ### ✅ Findings
 The following hosts were identified:
