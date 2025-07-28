@@ -72,3 +72,26 @@ This project was born out of curiosity and a desire to simulate how attackers th
 
 ⚠️ **DISCLAIMER**: This lab is built and tested in an isolated environment. All activities and simulations are strictly for educational and ethical purposes.
 >>>>>>> 3fdc141 (Initial commit with README and folder structure)
+---
+
+## 🔍 Phase 1: Network Discovery (Netdiscover)
+
+### 🎯 Objective
+To identify active hosts on the internal network using ARP-based reconnaissance.
+
+### 🧪 Tool Used
+- `netdiscover` — for passive and active network discovery via ARP requests.
+
+### 📡 Command Executed
+```bash
+sudo netdiscover -r 10.10.10.0/24
+### 🖼️ Screenshot
+![Netdiscover Result](./screenshots/proof_of_concepts/phase1/netdiscover_result.png)
+
+### ✅ Findings
+The following hosts were identified:
+- **10.10.10.1** — MAC: 52:54:00:12:35:00 — Unknown vendor  
+- **10.10.10.2** — MAC: 52:54:00:12:35:00 — Unknown vendor  
+- **10.10.10.3** — MAC: 08:00:27:4a:09:30 — PCS Systemtechnik GmbH
+
+These hosts will be further analyzed in Phase 2 for open ports and running services.
