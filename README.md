@@ -55,7 +55,6 @@ Will be added as the lab progresses to showcase:
 | 4     | Lateral Movement                     | ⏳ Pending |
 | 5     | Data Exfiltration                    | ⏳ Pending |
 | 6     | Final Report + Defense Suggestions   | ⏳ Pending |
-
 ---
 
 ## 💡 Why This Lab?
@@ -66,7 +65,7 @@ This project was born out of curiosity and a desire to simulate how attackers th
 
 ## 🔗 Connect With Me
 
-- **LinkedIn**: [https://www.linkedin.com/in/your-profile](#)
+- **LinkedIn**: [https://www.linkedin.com/in/cypriano-akinwunmi-33383063/](#)
 
 ---
 
@@ -97,3 +96,26 @@ The following hosts were identified:
 - **10.10.10.3** — MAC: 08:00:27:4a:09:30 — PCS Systemtechnik GmbH
 
 These hosts will be further analyzed in Phase 2 for open ports and running services.
+---
+
+## 🔎 Phase 2: Port Scanning with Nmap
+
+### 🎯 Objective
+To identify open ports and services running on the discovered host `10.10.10.3`.
+
+### 🧪 Tool Used
+- `nmap` — for scanning TCP ports.
+
+### 🧾 Command Executed
+```bash
+sudo nmap -sS -Pn -T4 -p- 10.10.10.3 -oN phase2_initial_tcp_scan.txt
+
+✅ Findings
+
+All 65,535 TCP ports on 10.10.10.3 were filtered (i.e., blocked or dropped by firewall), indicating strict network filtering or host hardening.
+
+    Host is up (0.0014s latency)
+
+    MAC: 08:00:27:BA:37:DD — PCS Systemtechnik/Oracle VirtualBox virtual NIC
+
+    All scanned ports: filtered
