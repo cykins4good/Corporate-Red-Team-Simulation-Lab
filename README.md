@@ -2,6 +2,12 @@
 
 # 🛡️ Corporate Red Team Simulation Lab
 
+<p align="center">
+  <img src="https://i.imgur.com/ytObHPf.png" alt="Red Team Banner">
+</p>
+
+
+
 Welcome to the **Corporate Red Team Simulation Lab** — a hands-on project inspired by the mindset and methodology of real-world adversaries. This initiative showcases my passion as a **Cybersecurity Ethical Hacker & Penetration Tester**, blending offensive security tools, creativity, and strategy to simulate attacks against a virtual corporate environment.
 
 ## 🎯 Objective
