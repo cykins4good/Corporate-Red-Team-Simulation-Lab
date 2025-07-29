@@ -110,6 +110,10 @@ To identify open ports and services running on the discovered host `10.10.10.3`.
 ```bash
 sudo nmap -sS -Pn -T4 -p- 10.10.10.3 -oN phase2_initial_tcp_scan.txt
 
+### 🖼️ Screenshot
+![Nmap Initial Scan](screenshots/proof_of_concepts/phase2/nmap_initial_scan.png)
+
+
 ✅ Findings
 
 All 65,535 TCP ports on 10.10.10.3 were filtered (i.e., blocked or dropped by firewall), indicating strict network filtering or host hardening.
