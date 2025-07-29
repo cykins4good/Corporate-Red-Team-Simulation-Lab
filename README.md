@@ -3,8 +3,9 @@
 # 🛡️ Corporate Red Team Simulation Lab
 
 <p align="center">
-  <img src="https://i.imgur.com/ytObHPf.png" alt="Red Team Banner">
+  <img src="banners/red_team_banner.png" alt="Cybersecurity Red Team Banner" width="100%" />
 </p>
+
 
 
 
