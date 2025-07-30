@@ -129,3 +129,32 @@ All 65,535 TCP ports on 10.10.10.3 were filtered (i.e., blocked or dropped by fi
 
     All scanned ports: filtered
 
+## 🔎 Phase 3: Service and Version Detection with Nmap
+
+### 🎯 Objective
+To determine which services are running on open ports and identify their versions for host `10.10.10.3`.
+
+### 🧪 Tool Used
+- `nmap` — with service and version detection.
+
+### 🧾 Command Executed
+```bash
+sudo nmap -sV -Pn -T4 -p- 10.10.10.3 -oN phase3_service_version_detection.txt
+```
+### 🖼 Screenshot
+
+![Nmap Version Detection](screenshots/proof_of_concepts/phase3/nmap_version_detection.png)
+
+✅ Findings
+
+    Host is up with latency: 0.0028s
+
+    MAC Address: 08:00:27:56:7F:6F — PCS Systemtechnik / Oracle VirtualBox virtual NIC
+
+    All 65,535 TCP ports are in filtered state (ignored), meaning they are likely blocked by a firewall or not responding.
+
+    No visible services were detected.
+
+    Nmap completed service/version detection, but due to all ports being filtered, no services were fingerprinted.
+
+    ℹ️ This suggests strong host hardening, strict firewall rules, or intrusion prevention mechanisms.
