@@ -158,3 +158,34 @@ sudo nmap -sV -Pn -T4 -p- 10.10.10.3 -oN phase3_service_version_detection.txt
     Nmap completed service/version detection, but due to all ports being filtered, no services were fingerprinted.
 
     ℹ️ This suggests strong host hardening, strict firewall rules, or intrusion prevention mechanisms.
+## 🔎 Phase 4: Vulnerability Scanning
+
+### 🎯 Objective
+To identify known vulnerabilities and exposed services on host `10.10.10.3`.
+
+### 🧪 Tools Used
+- `nmap` — with vulnerability NSE scripts
+- `nikto` — for web server vulnerability detection
+
+### 🧾 Commands Executed
+```bash
+sudo nmap -sV --script vuln -Pn 10.10.10.3 -oN phase4_nmap_vuln_scan.txt
+nikto -h http://10.10.10.3 -o phase4_nikto_results.txt
+```
+
+### 🖼 Screenshots
+
+#### 🔍 Nmap Vulnerability Scan
+![Nmap Vuln Scan](screenshots/proof_of_concepts/phase4/nmap_vuln_scan.png)
+
+#### 🌐 Nikto Web Scan
+![Nikto Scan](screenshots/proof_of_concepts/phase4/nikto_scan.png)
+
+### ✅ Findings
+
+- 🔌 **Host is up** with latency: `0.0025s`
+- 🧱 All 1000 ports were **filtered** — no responses, indicating firewall restrictions
+- ❌ **Nmap** did not detect any open services or vulnerabilities
+- 🌐 **Nikto** tested `http://10.10.10.3` and returned: `0 host(s) tested` — no web server accessible
+
+> 🔐 The host appears well-hardened with strong firewall or network filtering controls.
