@@ -189,3 +189,96 @@ nikto -h http://10.10.10.3 -o phase4_nikto_results.txt
 - 🌐 **Nikto** tested `http://10.10.10.3` and returned: `0 host(s) tested` — no web server accessible
 
 > 🔐 The host appears well-hardened with strong firewall or network filtering controls.
+
+## 🧭 Phase 5: Lateral Movement Simulation
+
+### 🎯 Objective
+To simulate lateral movement by scanning for other hosts in the network, enumerating services (like SMB), and attempting to authenticate using discovered or assumed credentials.
+
+---
+
+### 🧪 Tools Used
+- `nmap` — to scan for open ports
+- `enum4linux` — to enumerate SMB shares and domain/workgroup info
+- `crackmapexec` — to test for SMB authentication with known credentials
+
+---
+
+### 🧾 Step-by-Step Commands & Outputs
+
+#### 🔍 Step 1: Port Scanning of Other Internal Hosts
+Performed a full TCP port scan on two adjacent hosts `10.10.10.1` and `10.10.10.2`.
+
+```bash
+sudo nmap -sS -Pn -T4 -p- 10.10.10.1 -oN phase5_scan_10.10.10.1.txt
+sudo nmap -sS -Pn -T4 -p- 10.10.10.2 -oN phase5_scan_10.10.10.2.txt
+```
+### 🖼 Screenshots
+![Scan of 10.10.10.1](screenshots/proof_of_concepts/phase5/scan_10.10.10.1.png)
+![Scan of 10.10.10.2](screenshots/proof_of_concepts/phase5/scan_10.10.10.2.png)
+
+### 🧾 Step 2: Enumeration on 10.10.10.1 (SMB)
+
+Attempted enumeration of SMB shares and domain info using anonymous credentials.
+```bash
+smbclient -L //10.10.10.1 -N
+enum4linux 10.10.10.1
+```
+### 🖼 Screenshot
+![Enumeration on 10.10.10.1](screenshots/proof_of_concepts/phase5/enum_10.10.10.1.png)
+
+
+### 📌 Result: Enumeration failed. No domain or share info was returned.
+
+### 🧾 Step 3: Targeted Port Scan for SMB (TCP 445)
+Confirmed SMB port state on both hosts to determine if SMB is reachable.
+```bash
+sudo nmap -p 445 10.10.10.1
+sudo nmap -p 445 10.10.10.2
+```
+### 🖼 Screenshots
+![Port 445 Scan](screenshots/proof_of_concepts/phase5/scan_10.10.10.2.png)
+
+### 📌 Results:
+
+    10.10.10.1: Port 445 was closed
+
+    10.10.10.2: Port 445 was open
+
+### 🔐 Step 4: SMB Authentication Testing (CrackMapExec)
+
+Tested authentication against both hosts using assumed credentials:
+```bash
+PYTHONWARNINGS="ignore" crackmapexec smb 10.10.10.1 -u administrator -p 'Password123'
+PYTHONWARNINGS="ignore" crackmapexec smb 10.10.10.2 -u administrator -p 'Password123'
+```
+### 🖼 Screenshots
+![CrackMapExec on 10.10.10.1](screenshots/proof_of_concepts/phase5/cme_10.10.10.1.png)
+![CrackMapExec on 10.10.10.2](screenshots/proof_of_concepts/phase5/cme_10.10.10.2.png)
+
+### 📌 Results:
+
+    10.10.10.1: Authentication failed (STATUS_LOGON_FAILURE)
+
+    10.10.10.2: Authentication failed, but system fingerprinted as:
+
+        OS: Windows 10 / Server 2019 Build 19041
+
+        SMBv1: Disabled
+
+        SMB Signing: Disabled
+
+### ✅ Findings Summary
+| Host         | Port 445 | Enumeration       | Authentication | Notes                      |
+| ------------ | -------- | ----------------- | -------------- | -------------------------- |
+| `10.10.10.1` | ❌ Closed | ❌ Failed          | ❌ Failed       | Not reachable over SMB     |
+| `10.10.10.2` | ✅ Open   | 🔒 Not Enumerated | ❌ Login failed | Fingerprinted successfully |
+
+📡 10.10.10.1 only had port 53 (DNS) open; SMB closed.
+
+🔍 10.10.10.2 had SMB port open but login attempt failed.
+
+🧱 This indicates strict access controls, host isolation, or wrong credentials.
+
+🧪 Demonstrated lateral movement reconnaissance even when access was denied.
+
