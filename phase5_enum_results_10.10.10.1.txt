@@ -1,0 +1,31 @@
+$ smbclient -L //10.10.10.1 -N
+enum4linux 10.10.10.1
+
+do_connect: Connection to 10.10.10.1 failed (Error NT_STATUS_CONNECTION_REFUSED)
+Starting enum4linux v0.9.1 ( http://labs.portcullis.co.uk/application/enum4linux/ ) on Fri Aug  1 07:41:42 2025
+
+ =========================================( Target Information )=========================================                                                                    
+                                                                                                
+Target ........... 10.10.10.1                                                                   
+RID Range ........ 500-550,1000-1050
+Username ......... ''
+Password ......... ''
+Known Usernames .. administrator, guest, krbtgt, domain admins, root, bin, none
+
+
+ =============================( Enumerating Workgroup/Domain on 10.10.10.1 )=============================                                                                    
+                                                                                                
+                                                                                                
+[E] Can't find workgroup/domain                                                                 
+                                                                                                
+                                                                                                
+
+ =================================( Nbtstat Information for 10.10.10.1 )=================================                                                 
+                                                                             
+Looking up status of 10.10.10.1                                              
+No reply from 10.10.10.1
+
+ ====================================( Session Check on 10.10.10.1 )====================================                                                  
+                                                                             
+                                                                             
+[E] Server doesn't allow session using username '', password ''.  Aborting remainder of tests.

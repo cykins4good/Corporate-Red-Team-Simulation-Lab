@@ -1,0 +1,8 @@
+# Nmap 7.95 scan initiated Tue Jul 29 05:47:47 2025 as: /usr/lib/nmap/nmap -sS -Pn -T4 -p- -oN phase2_initial_tcp_scan.txt 10.10.10.3
+Nmap scan report for 10.10.10.3
+Host is up (0.0014s latency).
+All 65535 scanned ports on 10.10.10.3 are in ignored states.
+Not shown: 65535 filtered tcp ports (proto-unreach)
+MAC Address: 08:00:27:BA:37:DD (PCS Systemtechnik/Oracle VirtualBox virtual NIC)
+
+# Nmap done at Tue Jul 29 05:49:28 2025 -- 1 IP address (1 host up) scanned in 101.53 seconds

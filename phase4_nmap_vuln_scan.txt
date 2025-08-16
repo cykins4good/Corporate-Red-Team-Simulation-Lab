@@ -1,0 +1,9 @@
+# Nmap 7.95 scan initiated Wed Jul 30 08:46:57 2025 as: /usr/lib/nmap/nmap -sV --script vuln -Pn -oN phase4_nmap_vuln_scan.txt 10.10.10.3
+Nmap scan report for 10.10.10.3
+Host is up (0.0025s latency).
+All 1000 scanned ports on 10.10.10.3 are in ignored states.
+Not shown: 1000 filtered tcp ports (proto-unreach)
+MAC Address: 08:00:27:56:7F:6F (PCS Systemtechnik/Oracle VirtualBox virtual NIC)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Wed Jul 30 08:47:11 2025 -- 1 IP address (1 host up) scanned in 13.97 seconds

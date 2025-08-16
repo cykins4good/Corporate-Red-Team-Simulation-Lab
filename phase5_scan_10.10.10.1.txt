@@ -1,0 +1,9 @@
+# Nmap 7.95 scan initiated Wed Jul 30 15:05:52 2025 as: /usr/lib/nmap/nmap -sS -Pn -T4 -p- -oN phase5_scan_10.10.10.1.txt 10.10.10.1
+Nmap scan report for 10.10.10.1
+Host is up (0.0020s latency).
+Not shown: 65534 closed tcp ports (reset)
+PORT   STATE SERVICE
+53/tcp open  domain
+MAC Address: 52:54:00:12:35:00 (QEMU virtual NIC)
+
+# Nmap done at Wed Jul 30 15:10:53 2025 -- 1 IP address (1 host up) scanned in 300.78 seconds
